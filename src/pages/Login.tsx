@@ -1,7 +1,7 @@
 // src/pages/Login.tsx
 
 import { useState } from 'react';
-import { useApp } from '../contexts/AppContext';
+import { useApp } from '../App';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import styles from './Login.module.scss';

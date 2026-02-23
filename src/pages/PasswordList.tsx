@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../contexts/AppContext';
+import { useApp } from '../App';
 import { PasswordCard } from '../components/password/PasswordCard';
 import { Modal } from '../components/common/Modal';
 import { Category, CATEGORY_CONFIG } from '../types';

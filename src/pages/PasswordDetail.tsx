@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useApp } from '../contexts/AppContext';
+import { useApp } from '../App';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import { Category, CATEGORY_CONFIG } from '../types';

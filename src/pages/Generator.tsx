@@ -1,7 +1,7 @@
 // src/pages/Generator.tsx
 
 import { useState, useEffect } from 'react';
-import { useApp } from '../contexts/AppContext';
+import { useApp } from '../App';
 import { generatePassword } from '../utils/generator';
 import { GenerationRule } from '../types';
 import styles from './Generator.module.scss';

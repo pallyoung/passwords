@@ -1,20 +1,50 @@
 // src/App.tsx
 
-import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AppProvider, useApp } from './contexts/AppContext';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { RelaxProvider, useRelaxState, useActions, useRelaxValue } from '@relax-state/react';
 import { LoginPage } from './pages/Login';
 import { PasswordListPage } from './pages/PasswordList';
 import { PasswordDetailPage } from './pages/PasswordDetail';
 import { GeneratorPage } from './pages/Generator';
 import { SettingsPage } from './pages/Settings';
 import { Layout } from './components/layout/Layout';
+import {
+  store,
+  isAuthenticatedState,
+  isFirstTimeState,
+  initAppAction,
+  setupMasterPasswordAction,
+  loginAction,
+  logoutAction,
+  addPasswordAction,
+  updatePasswordAction,
+  deletePasswordAction,
+  updateRuleAction,
+  setSearchQueryAction,
+  setSelectedCategoryAction,
+  passwordsState,
+  ruleState,
+  searchQueryState,
+  selectedCategoryState
+} from './store';
 import './styles/global.scss';
 import styles from './App.module.scss';
 
-function AppContent() {
-  const { isAuthenticated } = useApp();
-  const [activeTab, setActiveTab] = useState<'passwords' | 'generator' | 'settings'>('passwords');
+function getActiveTab(pathname: string): 'passwords' | 'generator' | 'settings' {
+  if (pathname === '/generator') return 'generator';
+  if (pathname === '/settings') return 'settings';
+  return 'passwords';
+}
+
+function MainContent() {
+  const [isAuthenticated] = useRelaxState(isAuthenticatedState);
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState<'passwords' | 'generator' | 'settings'>(() => getActiveTab(location.pathname));
+
+  useEffect(() => {
+    setActiveTab(getActiveTab(location.pathname));
+  }, [location.pathname]);
 
   if (!isAuthenticated) {
     return <LoginPage />;
@@ -34,17 +64,67 @@ function AppContent() {
   );
 }
 
+function AppInitializer({ children }: { children: React.ReactNode }) {
+  const [init] = useActions([initAppAction]);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  return <>{children}</>;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <AppProvider>
-        <div className={styles.app}>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/*" element={<AppContent />} />
-          </Routes>
-        </div>
-      </AppProvider>
+      <div className={styles.app}>
+        <RelaxProvider store={store}>
+          <AppInitializer>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/*" element={<MainContent />} />
+            </Routes>
+          </AppInitializer>
+        </RelaxProvider>
+      </div>
     </BrowserRouter>
   );
+}
+
+// 导出 Hooks 供组件使用
+export function useApp() {
+  const [isAuthenticated] = useRelaxState(isAuthenticatedState);
+  const [isFirstTime] = useRelaxState(isFirstTimeState);
+  const [passwords] = useRelaxState(passwordsState);
+  const [rule] = useRelaxState(ruleState);
+  const [searchQuery] = useRelaxState(searchQueryState);
+  const [selectedCategory] = useRelaxState(selectedCategoryState);
+
+  const [setupMasterPassword] = useActions([setupMasterPasswordAction]);
+  const [login] = useActions([loginAction]);
+  const [logout] = useActions([logoutAction]);
+  const [addPassword] = useActions([addPasswordAction]);
+  const [updatePassword] = useActions([updatePasswordAction]);
+  const [deletePassword] = useActions([deletePasswordAction]);
+  const [updateRule] = useActions([updateRuleAction]);
+  const [setSearchQuery] = useActions([setSearchQueryAction]);
+  const [setSelectedCategory] = useActions([setSelectedCategoryAction]);
+
+  return {
+    isAuthenticated,
+    isFirstTime,
+    login,
+    logout,
+    setupMasterPassword,
+    passwords,
+    addPassword,
+    updatePassword,
+    deletePassword,
+    rule,
+    updateRule,
+    searchQuery,
+    setSearchQuery,
+    selectedCategory,
+    setSelectedCategory,
+  };
 }

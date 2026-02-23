@@ -1,7 +1,7 @@
 // src/pages/Settings.tsx
 
 import { useState } from 'react';
-import { useApp } from '../contexts/AppContext';
+import { useApp } from '../App';
 import { Modal } from '../components/common/Modal';
 import { Input } from '../components/common/Input';
 import { setMasterPassword } from '../utils/storage';
