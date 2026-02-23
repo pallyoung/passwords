@@ -1,0 +1,66 @@
+// src/pages/Settings.module.scss
+
+.container {
+  padding-bottom: 24px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #202124;
+  margin-bottom: 24px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5f6368;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card {
+  background: white;
+  border: 1px solid #dadce0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #dadce0;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+    background: #  &:hover {
+f8f9fa;
+  }
+}
+
+.itemLabel {
+  font-size: 16px;
+  color: #202124;
+}
+
+.itemValue {
+  font-size: 14px;
+  color: #5f6368;
+}
+
+.version {
+  text-align: center;
+  color: #5f6368;
+  font-size: 12px;
+  margin-top: 24px;
+}
