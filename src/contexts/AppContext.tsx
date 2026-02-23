@@ -8,8 +8,7 @@ import {
   verifyMasterPassword,
   saveData,
   loadData,
-  saveRule,
-  loadRule
+  saveRule
 } from '../utils/storage';
 import { generateRandomString } from '../utils/crypto';
 

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { Modal } from '../components/common/Modal';
 import { Input } from '../components/common/Input';
-import { Button } from '../components/common/Button';
 import { setMasterPassword } from '../utils/storage';
 import styles from './Settings.module.scss';
 
