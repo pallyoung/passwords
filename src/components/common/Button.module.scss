@@ -1,0 +1,51 @@
+// src/components/common/Button.module.scss
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    background: #1a73e8;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #1557b0;
+    }
+  }
+
+  &.secondary {
+    background: #f1f3f4;
+    color: #202124;
+
+    &:hover:not(:disabled) {
+      background: #e8eaed;
+    }
+  }
+
+  &.danger {
+    background: #ea4335;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: #c5221f;
+    }
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
+}
