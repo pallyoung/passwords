@@ -1,0 +1,82 @@
+// src/components/layout/Layout.module.scss
+
+.container {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.content {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+  background: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 768px) {
+  .content {
+    margin: 40px auto;
+    min-height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .container {
+    padding-bottom: 40px;
+  }
+}
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid #dadce0;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  z-index: 100;
+
+  @media (min-width: 768px) {
+    position: sticky;
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+  color: #5f6368;
+  text-decoration: none;
+  font-size: 12px;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &.active {
+    color: #1a73e8;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.navIcon {
+  font-size: 20px;
+}
+
+.main {
+  padding: 16px;
+  padding-bottom: 80px;
+
+  @media (min-width: 768px) {
+    padding: 24px;
+    padding-bottom: 24px;
+  }
+}
