@@ -1,13 +1,13 @@
-// src/pages/PasswordList.tsx
+// src/pages/password-list/index.tsx
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApp } from '../App';
-import { PasswordCard } from '../components/password/password-card';
-import { Modal } from '../components/common/modal';
-import { needsUpdate } from '../utils/date';
-import { Category, CATEGORY_CONFIG } from '../types';
-import styles from './PasswordList.module.scss';
+import { useApp } from '../../App';
+import { PasswordCard } from '../../components/password/password-card';
+import { Modal } from '../../components/common/modal';
+import { needsUpdate } from '../../utils/date';
+import { Category, CATEGORY_CONFIG } from '../../types';
+import styles from './index.module.scss';
 
 type TabCategory = Category | 'all';
 
