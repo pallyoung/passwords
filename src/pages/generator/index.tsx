@@ -1,10 +1,10 @@
-// src/pages/Generator.tsx
+// src/pages/generator/index.tsx
 
 import { useState, useEffect } from 'react';
-import { useApp } from '../App';
-import { generatePassword } from '../utils/generator';
-import { GenerationRule } from '../types';
-import styles from './Generator.module.scss';
+import { useApp } from '../../App';
+import { generatePassword } from '../../utils/generator';
+import { GenerationRule } from '../../types';
+import styles from './index.module.scss';
 
 export function GeneratorPage() {
   const { rule, updateRule } = useApp();
