@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../App';
 import { Button } from '../components/common/button';
-import { Input } from '../components/common/Input';
+import { Input } from '../components/common/input';
 import { Category, CATEGORY_CONFIG } from '../types';
 import { generatePassword, calculateStrength } from '../utils/generator';
 import styles from './PasswordDetail.module.scss';

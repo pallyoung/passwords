@@ -1,7 +1,7 @@
-// src/components/common/Input.tsx
+// src/components/common/input/index.tsx
 
 import { InputHTMLAttributes, useState } from 'react';
-import styles from './Input.module.scss';
+import styles from './index.module.scss';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;

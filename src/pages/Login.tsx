@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useApp } from '../App';
 import { Button } from '../components/common/button';
-import { Input } from '../components/common/Input';
+import { Input } from '../components/common/input';
 import styles from './Login.module.scss';
 
 export function LoginPage() {
