@@ -103,16 +103,29 @@ export function useApp() {
   const [selectedCategory] = useRelaxState(selectedCategoryState);
   const [reminderSettings] = useRelaxState(reminderSettingsState);
 
-  const [setupMasterPassword] = useActions([setupMasterPasswordAction]);
-  const [login] = useActions([loginAction]);
-  const [logout] = useActions([logoutAction]);
-  const [addPassword] = useActions([addPasswordAction]);
-  const [updatePassword] = useActions([updatePasswordAction]);
-  const [deletePassword] = useActions([deletePasswordAction]);
-  const [updateRule] = useActions([updateRuleAction]);
-  const [setSearchQuery] = useActions([setSearchQueryAction]);
-  const [setSelectedCategory] = useActions([setSelectedCategoryAction]);
-  const [updateReminderSettings] = useActions([updateReminderSettingsAction]);
+  const [
+    setupMasterPassword,
+    login,
+    logout,
+    addPassword,
+    updatePassword,
+    deletePassword,
+    updateRule,
+    setSearchQuery,
+    setSelectedCategory,
+    updateReminderSettings
+  ] = useActions([
+    setupMasterPasswordAction,
+    loginAction,
+    logoutAction,
+    addPasswordAction,
+    updatePasswordAction,
+    deletePasswordAction,
+    updateRuleAction,
+    setSearchQueryAction,
+    setSelectedCategoryAction,
+    updateReminderSettingsAction
+  ]);
 
   return {
     isAuthenticated,
