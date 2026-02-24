@@ -1,8 +1,8 @@
-// src/components/layout/Layout.tsx
+// src/components/layout/layout/index.tsx
 
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Layout.module.scss';
+import styles from './index.module.scss';
 
 interface LayoutProps {
   children: ReactNode;

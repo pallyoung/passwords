@@ -8,7 +8,7 @@ import { PasswordListPage } from './pages/PasswordList';
 import { PasswordDetailPage } from './pages/PasswordDetail';
 import { GeneratorPage } from './pages/Generator';
 import { SettingsPage } from './pages/Settings';
-import { Layout } from './components/layout/Layout';
+import { Layout } from './components/layout/layout';
 import {
   store,
   isAuthenticatedState,
