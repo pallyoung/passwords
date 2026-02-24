@@ -1,7 +1,7 @@
 // src/store/index.ts
 
-import { state, atom, action, createStore, Store } from '@relax-state/react';
-import { Password, GenerationRule, DEFAULT_RULE, Category } from '../types';
+import { state, action, createStore } from '@relax-state/react';
+import { Password, GenerationRule, DEFAULT_RULE, Category, DEFAULT_REMINDER, ReminderSettings } from '../types';
 
 // 创建 Store
 export const store = createStore();
@@ -11,97 +11,166 @@ export const isAuthenticatedState = state(false, 'isAuthenticated');
 export const isFirstTimeState = state(true, 'isFirstTime');
 
 // 密码列表
-export const passwordsState = atom<Password[]>([], 'passwords');
+export const passwordsState = state<Password[]>([], 'passwords');
 
 // 生成规则
-export const ruleState = atom<GenerationRule>(DEFAULT_RULE, 'rule');
+export const ruleState = state<GenerationRule>(DEFAULT_RULE, 'rule');
 
 // 搜索和筛选
 export const searchQueryState = state('', 'searchQuery');
 export const selectedCategoryState = state<Category | 'all'>('all', 'selectedCategory');
 
+// 提醒设置
+export const reminderSettingsState = state<ReminderSettings>(DEFAULT_REMINDER, 'reminderSettings');
+
 // 主密码
 let masterPassword = '';
 
 // Actions
-export const setupMasterPasswordAction = action(async (password: string) => {
-  const { setMasterPassword, saveData } = await import('../utils/storage');
-  await setMasterPassword(password);
-  masterPassword = password;
-  const data = { passwords: [], generationRule: ruleState.get() };
-  await saveData(data, password);
-  isFirstTimeState.set(false);
-  isAuthenticatedState.set(true);
-}, { name: 'setupMasterPassword' });
-
-export const loginAction = action(async (password: string) => {
-  const { verifyMasterPassword, loadData } = await import('../utils/storage');
-  const isValid = await verifyMasterPassword(password);
-  if (isValid) {
+export const setupMasterPasswordAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any, password: string) => {
+    const { setMasterPassword, saveData } = await import('../utils/storage');
+    await setMasterPassword(password);
     masterPassword = password;
-    const data = await loadData(password);
-    passwordsState.set(data.passwords);
-    ruleState.set(data.generationRule || DEFAULT_RULE);
-    isAuthenticatedState.set(true);
-    return true;
-  }
-  return false;
-}, { name: 'login' });
+    const data = { passwords: [], generationRule: s.get(ruleState), reminderSettings: DEFAULT_REMINDER };
+    await saveData(data, password);
+    s.set(isFirstTimeState, false);
+    s.set(isAuthenticatedState, true);
+  },
+  { name: 'setupMasterPassword' }
+);
 
-export const logoutAction = action(() => {
-  masterPassword = '';
-  passwordsState.set([]);
-  isAuthenticatedState.set(false);
-}, { name: 'logout' });
+export const loginAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any, password: string) => {
+    const { verifyMasterPassword, loadData } = await import('../utils/storage');
+    const isValid = await verifyMasterPassword(password);
+    if (isValid) {
+      masterPassword = password;
+      const data = await loadData(password);
+      s.set(passwordsState, data.passwords);
+      s.set(ruleState, data.generationRule || DEFAULT_RULE);
+      s.set(reminderSettingsState, data.reminderSettings || DEFAULT_REMINDER);
+      s.set(isAuthenticatedState, true);
+      return true;
+    }
+    return false;
+  },
+  { name: 'login' }
+);
 
-export const addPasswordAction = action(async (data: Omit<Password, 'id' | 'createdAt' | 'updatedAt'>) => {
-  const { generateRandomString } = await import('../utils/crypto');
-  const { saveData } = await import('../utils/storage');
-  const now = Date.now();
-  const newPassword: Password = {
-    ...data,
-    id: generateRandomString(16),
-    createdAt: now,
-    updatedAt: now,
-  };
-  const newPasswords = [...passwordsState.get(), newPassword];
-  passwordsState.set(newPasswords);
-  await saveData({ passwords: newPasswords, generationRule: ruleState.get() }, masterPassword);
-}, { name: 'addPassword' });
+export const logoutAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (s: any) => {
+    masterPassword = '';
+    s.set(passwordsState, []);
+    s.set(isAuthenticatedState, false);
+  },
+  { name: 'logout' }
+);
 
-export const updatePasswordAction = action(async (id: string, data: Partial<Password>) => {
-  const { saveData } = await import('../utils/storage');
-  const newPasswords = passwordsState.get().map(p =>
-    p.id === id ? { ...p, ...data, updatedAt: Date.now() } : p
-  );
-  passwordsState.set(newPasswords);
-  await saveData({ passwords: newPasswords, generationRule: ruleState.get() }, masterPassword);
-}, { name: 'updatePassword' });
+export const addPasswordAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any, data: Omit<Password, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const { generateRandomString } = await import('../utils/crypto');
+    const { saveData } = await import('../utils/storage');
+    const now = Date.now();
+    const newPassword: Password = {
+      ...data,
+      id: generateRandomString(16),
+      createdAt: now,
+      updatedAt: now,
+    };
+    const currentPasswords = s.get(passwordsState);
+    const newPasswords = [...currentPasswords, newPassword];
+    s.set(passwordsState, newPasswords);
+    await saveData(
+      { passwords: newPasswords, generationRule: s.get(ruleState), reminderSettings: s.get(reminderSettingsState) },
+      masterPassword
+    );
+  },
+  { name: 'addPassword' }
+);
 
-export const deletePasswordAction = action(async (id: string) => {
-  const { saveData } = await import('../utils/storage');
-  const newPasswords = passwordsState.get().filter(p => p.id !== id);
-  passwordsState.set(newPasswords);
-  await saveData({ passwords: newPasswords, generationRule: ruleState.get() }, masterPassword);
-}, { name: 'deletePassword' });
+export const updatePasswordAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any, { id, data }: { id: string; data: Partial<Password> }) => {
+    const { saveData } = await import('../utils/storage');
+    const currentPasswords = s.get(passwordsState);
+    const newPasswords = currentPasswords.map((p: Password) =>
+      p.id === id ? { ...p, ...data, updatedAt: Date.now() } : p
+    );
+    s.set(passwordsState, newPasswords);
+    await saveData(
+      { passwords: newPasswords, generationRule: s.get(ruleState), reminderSettings: s.get(reminderSettingsState) },
+      masterPassword
+    );
+  },
+  { name: 'updatePassword' }
+);
 
-export const updateRuleAction = action(async (newRule: GenerationRule) => {
-  const { saveData, saveRule } = await import('../utils/storage');
-  ruleState.set(newRule);
-  saveRule(newRule);
-  await saveData({ passwords: passwordsState.get(), generationRule: newRule }, masterPassword);
-}, { name: 'updateRule' });
+export const deletePasswordAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any, id: string) => {
+    const { saveData } = await import('../utils/storage');
+    const currentPasswords = s.get(passwordsState);
+    const newPasswords = currentPasswords.filter((p: Password) => p.id !== id);
+    s.set(passwordsState, newPasswords);
+    await saveData(
+      { passwords: newPasswords, generationRule: s.get(ruleState), reminderSettings: s.get(reminderSettingsState) },
+      masterPassword
+    );
+  },
+  { name: 'deletePassword' }
+);
 
-export const setSearchQueryAction = action((query: string) => {
-  searchQueryState.set(query);
-}, { name: 'setSearchQuery' });
+export const updateRuleAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any, newRule: GenerationRule) => {
+    const { saveData, saveRule } = await import('../utils/storage');
+    s.set(ruleState, newRule);
+    saveRule(newRule);
+    await saveData({ passwords: s.get(passwordsState), generationRule: newRule }, masterPassword);
+  },
+  { name: 'updateRule' }
+);
 
-export const setSelectedCategoryAction = action((category: Category | 'all') => {
-  selectedCategoryState.set(category);
-}, { name: 'setSelectedCategory' });
+export const updateReminderSettingsAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any, newSettings: ReminderSettings) => {
+    const { saveData } = await import('../utils/storage');
+    s.set(reminderSettingsState, newSettings);
+    await saveData(
+      { passwords: s.get(passwordsState), generationRule: s.get(ruleState), reminderSettings: newSettings },
+      masterPassword
+    );
+  },
+  { name: 'updateReminderSettings' }
+);
+
+export const setSearchQueryAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (s: any, query: string) => {
+    s.set(searchQueryState, query);
+  },
+  { name: 'setSearchQuery' }
+);
+
+export const setSelectedCategoryAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (s: any, category: Category | 'all') => {
+    s.set(selectedCategoryState, category);
+  },
+  { name: 'setSelectedCategory' }
+);
 
 // 初始化检查
-export const initAppAction = action(async () => {
-  const { hasMasterPassword } = await import('../utils/storage');
-  isFirstTimeState.set(!hasMasterPassword());
-}, { name: 'initApp' });
+export const initAppAction = action(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (s: any) => {
+    const { hasMasterPassword } = await import('../utils/storage');
+    s.set(isFirstTimeState, !hasMasterPassword());
+  },
+  { name: 'initApp' }
+);
