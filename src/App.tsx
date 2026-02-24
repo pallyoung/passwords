@@ -7,7 +7,7 @@ import { LoginPage } from './pages/login';
 import { PasswordListPage } from './pages/password-list';
 import { PasswordDetailPage } from './pages/password-detail';
 import { GeneratorPage } from './pages/generator';
-import { SettingsPage } from './pages/Settings';
+import { SettingsPage } from './pages/settings';
 import { Layout } from './components/layout/layout';
 import {
   store,

@@ -1,12 +1,12 @@
-// src/pages/Settings.tsx
+// src/pages/settings/index.tsx
 
 import { useState } from 'react';
-import { useApp } from '../App';
-import { Modal } from '../components/common/modal';
-import { Input } from '../components/common/input';
-import { setMasterPassword } from '../utils/storage';
-import { needsUpdate } from '../utils/date';
-import styles from './Settings.module.scss';
+import { useApp } from '../../App';
+import { Modal } from '../../components/common/modal';
+import { Input } from '../../components/common/input';
+import { setMasterPassword } from '../../utils/storage';
+import { needsUpdate } from '../../utils/date';
+import styles from './index.module.scss';
 
 export function SettingsPage() {
   const { rule, logout, reminderSettings, updateReminderSettings, passwords } = useApp();
