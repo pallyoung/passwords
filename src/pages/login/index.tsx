@@ -1,10 +1,10 @@
-// src/pages/Login.tsx
+// src/pages/login/index.tsx
 
 import { useState } from 'react';
-import { useApp } from '../App';
-import { Button } from '../components/common/button';
-import { Input } from '../components/common/input';
-import styles from './Login.module.scss';
+import { useApp } from '../../App';
+import { Button } from '../../components/common/button';
+import { Input } from '../../components/common/input';
+import styles from './index.module.scss';
 
 export function LoginPage() {
   const { login, isFirstTime, setupMasterPassword } = useApp();

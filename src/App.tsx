@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom';
 import { RelaxProvider, useRelaxState, useActions } from '@relax-state/react';
-import { LoginPage } from './pages/Login';
+import { LoginPage } from './pages/login';
 import { PasswordListPage } from './pages/PasswordList';
 import { PasswordDetailPage } from './pages/PasswordDetail';
 import { GeneratorPage } from './pages/Generator';
