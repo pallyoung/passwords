@@ -1,7 +1,6 @@
 // src/components/password/PasswordCard.tsx
 
 import { Password, CATEGORY_CONFIG } from '../../types';
-import { calculateStrength } from '../../utils/generator';
 import { formatUpdateTime, needsUpdate } from '../../utils/date';
 import styles from './PasswordCard.module.scss';
 
@@ -16,7 +15,6 @@ interface PasswordCardProps {
 
 export function PasswordCard({ password, onClick, onCopy, onDelete, reminderEnabled = false, reminderDays = 90 }: PasswordCardProps) {
   const { label, color } = CATEGORY_CONFIG[password.category];
-  const { strength } = calculateStrength(password.password);
   const updateTimeText = formatUpdateTime(password.updatedAt);
   const isNeedUpdate = reminderEnabled && needsUpdate(password.updatedAt, reminderDays);
 
