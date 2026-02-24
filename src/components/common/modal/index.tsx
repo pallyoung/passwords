@@ -1,8 +1,8 @@
-// src/components/common/Modal.tsx
+// src/components/common/modal/index.tsx
 
 import { ReactNode, useEffect } from 'react';
-import { Button } from './button';
-import styles from './Modal.module.scss';
+import { Button } from '../button';
+import styles from './index.module.scss';
 
 interface ModalProps {
   isOpen: boolean;

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useApp } from '../App';
-import { Modal } from '../components/common/Modal';
+import { Modal } from '../components/common/modal';
 import { Input } from '../components/common/input';
 import { setMasterPassword } from '../utils/storage';
 import { needsUpdate } from '../utils/date';
