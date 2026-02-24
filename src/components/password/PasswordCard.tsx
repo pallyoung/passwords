@@ -2,6 +2,7 @@
 
 import { Password, CATEGORY_CONFIG } from '../../types';
 import { calculateStrength } from '../../utils/generator';
+import { formatUpdateTime, needsUpdate } from '../../utils/date';
 import styles from './PasswordCard.module.scss';
 
 interface PasswordCardProps {
@@ -9,11 +10,15 @@ interface PasswordCardProps {
   onClick: () => void;
   onCopy: () => void;
   onDelete: () => void;
+  reminderEnabled?: boolean;
+  reminderDays?: number;
 }
 
-export function PasswordCard({ password, onClick, onCopy, onDelete }: PasswordCardProps) {
+export function PasswordCard({ password, onClick, onCopy, onDelete, reminderEnabled = false, reminderDays = 90 }: PasswordCardProps) {
   const { label, color } = CATEGORY_CONFIG[password.category];
   const { strength } = calculateStrength(password.password);
+  const updateTimeText = formatUpdateTime(password.updatedAt);
+  const isNeedUpdate = reminderEnabled && needsUpdate(password.updatedAt, reminderDays);
 
   return (
     <div className={styles.card} onClick={onClick}>
@@ -30,9 +35,10 @@ export function PasswordCard({ password, onClick, onCopy, onDelete }: PasswordCa
         </span>
       </div>
       <div className={styles.footer}>
-        <span className={`${styles.strength} ${styles[strength]}`}>
-          {strength === 'weak' ? '弱' : strength === 'medium' ? '中' : '强'}
-        </span>
+        <span className={styles.updateTime}>{updateTimeText}</span>
+        {isNeedUpdate && (
+          <span className={styles.needUpdate}>需要更新</span>
+        )}
         <div className={styles.actions}>
           <button className={styles.actionBtn} onClick={e => { e.stopPropagation(); onCopy(); }}>
             📋 复制
