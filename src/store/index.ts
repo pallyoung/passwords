@@ -131,7 +131,10 @@ export const updateRuleAction = action(
     const { saveData, saveRule } = await import('../utils/storage');
     s.set(ruleState, newRule);
     saveRule(newRule);
-    await saveData({ passwords: s.get(passwordsState), generationRule: newRule }, masterPassword);
+    await saveData(
+      { passwords: s.get(passwordsState), generationRule: newRule, reminderSettings: s.get(reminderSettingsState) },
+      masterPassword
+    );
   },
   { name: 'updateRule' }
 );
