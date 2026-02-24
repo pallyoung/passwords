@@ -1,3 +1,5 @@
 node_modules/
-dist/
+dist
 *.local
+.playwright-mcp
+docs/plans
