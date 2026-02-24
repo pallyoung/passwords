@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '../App';
 import { PasswordCard } from '../components/password/PasswordCard';
 import { Modal } from '../components/common/Modal';
+import { needsUpdate } from '../utils/date';
 import { Category, CATEGORY_CONFIG } from '../types';
 import styles from './PasswordList.module.scss';
 
@@ -22,6 +23,7 @@ export function PasswordListPage() {
     setSelectedCategory,
     deletePassword,
     logout,
+    reminderSettings,
   } = useApp();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -34,6 +36,10 @@ export function PasswordListPage() {
     const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const needUpdateCount = reminderSettings?.enabled
+    ? passwords.filter(p => needsUpdate(p.updatedAt, reminderSettings.days)).length
+    : 0;
 
   const handleCopy = async (text: string) => {
     try {
@@ -77,6 +83,13 @@ export function PasswordListPage() {
         />
       </div>
 
+      <div className={styles.stats}>
+        共 {passwords.length} 个密码
+        {needUpdateCount > 0 && (
+          <span className={styles.needUpdate}>，{needUpdateCount} 个需要更新</span>
+        )}
+      </div>
+
       <div className={styles.tabs}>
         {CATEGORIES.map(cat => (
           <button
@@ -105,6 +118,8 @@ export function PasswordListPage() {
               onClick={() => navigate(`/password/${p.id}`)}
               onCopy={() => handleCopy(p.password)}
               onDelete={() => setDeleteId(p.id)}
+              reminderEnabled={reminderSettings?.enabled}
+              reminderDays={reminderSettings?.days || 90}
             />
           ))
         )}
