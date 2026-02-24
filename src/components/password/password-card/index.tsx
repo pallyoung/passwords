@@ -1,8 +1,8 @@
-// src/components/password/PasswordCard.tsx
+// src/components/password/password-card/index.tsx
 
-import { Password, CATEGORY_CONFIG } from '../../types';
-import { formatUpdateTime, needsUpdate } from '../../utils/date';
-import styles from './PasswordCard.module.scss';
+import { Password, CATEGORY_CONFIG } from '../../../types';
+import { formatUpdateTime, needsUpdate } from '../../../utils/date';
+import styles from './index.module.scss';
 
 interface PasswordCardProps {
   password: Password;

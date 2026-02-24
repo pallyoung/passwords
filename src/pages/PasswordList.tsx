@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../App';
-import { PasswordCard } from '../components/password/PasswordCard';
+import { PasswordCard } from '../components/password/password-card';
 import { Modal } from '../components/common/modal';
 import { needsUpdate } from '../utils/date';
 import { Category, CATEGORY_CONFIG } from '../types';
