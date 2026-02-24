@@ -1,8 +1,8 @@
 // src/App.tsx
 
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { RelaxProvider, useRelaxState, useActions, useRelaxValue } from '@relax-state/react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom';
+import { RelaxProvider, useRelaxState, useActions } from '@relax-state/react';
 import { LoginPage } from './pages/Login';
 import { PasswordListPage } from './pages/PasswordList';
 import { PasswordDetailPage } from './pages/PasswordDetail';
@@ -26,7 +26,9 @@ import {
   passwordsState,
   ruleState,
   searchQueryState,
-  selectedCategoryState
+  selectedCategoryState,
+  reminderSettingsState,
+  updateReminderSettingsAction
 } from './store';
 import './styles/global.scss';
 import styles from './App.module.scss';
@@ -52,14 +54,7 @@ function MainContent() {
 
   return (
     <Layout activeTab={activeTab} onTabChange={setActiveTab}>
-      <Routes>
-        <Route path="/" element={<PasswordListPage />} />
-        <Route path="/password/new" element={<PasswordDetailPage />} />
-        <Route path="/password/:id" element={<PasswordDetailPage />} />
-        <Route path="/generator" element={<GeneratorPage />} />
-        <Route path="/settings" element={<SettingsPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Outlet />
     </Layout>
   );
 }
@@ -68,7 +63,7 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
   const [init] = useActions([initAppAction]);
 
   useEffect(() => {
-    init();
+    init(undefined);
   }, []);
 
   return <>{children}</>;
@@ -82,7 +77,14 @@ export default function App() {
           <AppInitializer>
             <Routes>
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/*" element={<MainContent />} />
+              <Route path="/" element={<MainContent />}>
+                <Route index element={<PasswordListPage />} />
+                <Route path="password/new" element={<PasswordDetailPage />} />
+                <Route path="password/:id" element={<PasswordDetailPage />} />
+                <Route path="generator" element={<GeneratorPage />} />
+                <Route path="settings" element={<SettingsPage />} />
+              </Route>
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </AppInitializer>
         </RelaxProvider>
@@ -99,6 +101,7 @@ export function useApp() {
   const [rule] = useRelaxState(ruleState);
   const [searchQuery] = useRelaxState(searchQueryState);
   const [selectedCategory] = useRelaxState(selectedCategoryState);
+  const [reminderSettings] = useRelaxState(reminderSettingsState);
 
   const [setupMasterPassword] = useActions([setupMasterPasswordAction]);
   const [login] = useActions([loginAction]);
@@ -109,6 +112,7 @@ export function useApp() {
   const [updateRule] = useActions([updateRuleAction]);
   const [setSearchQuery] = useActions([setSearchQueryAction]);
   const [setSelectedCategory] = useActions([setSelectedCategoryAction]);
+  const [updateReminderSettings] = useActions([updateReminderSettingsAction]);
 
   return {
     isAuthenticated,
@@ -126,5 +130,7 @@ export function useApp() {
     setSearchQuery,
     selectedCategory,
     setSelectedCategory,
+    reminderSettings,
+    updateReminderSettings,
   };
 }
