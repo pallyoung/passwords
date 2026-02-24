@@ -15,8 +15,7 @@ export function PasswordDetailPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const { passwords, addPassword, updatePassword, rule } = useApp();
-
-  const isNew = id === 'new';
+  const isNew = !id;
   const existing = !isNew ? passwords.find(p => p.id === id) : null;
 
   const [name, setName] = useState(existing?.name || '');
@@ -39,7 +38,7 @@ export function PasswordDetailPage() {
     if (isNew) {
       await addPassword({ name, account, password, category, url, notes });
     } else if (existing) {
-      await updatePassword(existing.id, { name, account, password, category, url, notes });
+      await updatePassword({ id: existing.id, data: { name, account, password, category, url, notes } });
     }
     navigate('/');
   };

@@ -1,6 +1,6 @@
 // src/store/index.ts
 
-import { state, action, createStore} from '@relax-state/react';
+import { state, action, createStore, Store} from '@relax-state/react';
 import { Password, GenerationRule, DEFAULT_RULE, Category, DEFAULT_REMINDER, ReminderSettings } from '../types';
 
 // 创建 Store
@@ -71,8 +71,7 @@ export const logoutAction = action(
 );
 
 export const addPasswordAction = action(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async (s: any, data: Omit<Password, 'id' | 'createdAt' | 'updatedAt'>) => {
+  async (s: Store, data: Omit<Password, 'id' | 'createdAt' | 'updatedAt'>) => {
     const { generateRandomString } = await import('../utils/crypto');
     const { saveData } = await import('../utils/storage');
     const now = Date.now();
