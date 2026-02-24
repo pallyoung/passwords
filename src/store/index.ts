@@ -1,6 +1,6 @@
 // src/store/index.ts
 
-import { state, action, createStore } from '@relax-state/react';
+import { state, action, createStore} from '@relax-state/react';
 import { Password, GenerationRule, DEFAULT_RULE, Category, DEFAULT_REMINDER, ReminderSettings } from '../types';
 
 // 创建 Store
