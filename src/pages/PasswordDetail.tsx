@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../App';
-import { Button } from '../components/common/Button';
+import { Button } from '../components/common/button';
 import { Input } from '../components/common/Input';
 import { Category, CATEGORY_CONFIG } from '../types';
 import { generatePassword, calculateStrength } from '../utils/generator';

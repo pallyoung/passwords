@@ -1,7 +1,7 @@
 // src/components/common/Modal.tsx
 
 import { ReactNode, useEffect } from 'react';
-import { Button } from './Button';
+import { Button } from './button';
 import styles from './Modal.module.scss';
 
 interface ModalProps {

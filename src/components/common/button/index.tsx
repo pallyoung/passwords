@@ -1,7 +1,7 @@
-// src/components/common/Button.tsx
+// src/components/common/button/index.tsx
 
 import { ButtonHTMLAttributes, ReactNode } from 'react';
-import styles from './Button.module.scss';
+import styles from './index.module.scss';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger';
