@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from 'rea
 import { RelaxProvider, useRelaxState, useActions } from '@relax-state/react';
 import { LoginPage } from './pages/login';
 import { PasswordListPage } from './pages/password-list';
-import { PasswordDetailPage } from './pages/PasswordDetail';
+import { PasswordDetailPage } from './pages/password-detail';
 import { GeneratorPage } from './pages/Generator';
 import { SettingsPage } from './pages/Settings';
 import { Layout } from './components/layout/layout';
