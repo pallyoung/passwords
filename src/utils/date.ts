@@ -16,13 +16,13 @@ export function formatUpdateTime(updatedAt: number): string {
   }
 
   if (diffDays <= 30) {
-    return `${diffDays} 天前`;
+    return `更新于 ${diffDays} 天前`;
   }
 
   const date = new Date(updatedAt);
   const month = date.getMonth() + 1;
   const day = date.getDate();
-  return `${month}月${day}日`;
+  return `更新于 ${month}月${day}日`;
 }
 
 /**
