@@ -26,10 +26,17 @@ export interface GenerationRule {
   excludeAmbiguous: boolean;
 }
 
+// 提醒设置
+export interface ReminderSettings {
+  enabled: boolean;
+  days: number;
+}
+
 // 应用数据
 export interface AppData {
   passwords: Password[];
   generationRule: GenerationRule;
+  reminderSettings?: ReminderSettings;
 }
 
 // 默认生成规则
@@ -40,6 +47,12 @@ export const DEFAULT_RULE: GenerationRule = {
   includeNumbers: true,
   includeSymbols: true,
   excludeAmbiguous: true,
+};
+
+// 默认提醒设置
+export const DEFAULT_REMINDER: ReminderSettings = {
+  enabled: false,
+  days: 90,
 };
 
 // 分类配置
