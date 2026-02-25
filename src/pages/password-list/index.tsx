@@ -28,7 +28,13 @@ export function PasswordListPage() {
   } = useApp();
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [copyText, setCopyText] = useState('');
+  const [copyText, setCopyText] = useState<string>('');
+
+  // 判断是否为分类详情页
+  const isCategoryPage = !!category;
+  const currentCategoryLabel = isCategoryPage
+    ? CATEGORY_CONFIG[category as Category]?.label || '全部'
+    : '密码';
 
   // 从URL参数设置分类
   useEffect(() => {
@@ -44,6 +50,9 @@ export function PasswordListPage() {
     const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  // 当前筛选后的数量
+  const displayCount = filteredPasswords.length;
 
   const needUpdateCount = reminderSettings?.enabled
     ? passwords.filter(p => needsUpdate(p.updatedAt, reminderSettings.days)).length
@@ -74,7 +83,15 @@ export function PasswordListPage() {
   return (
     <div>
       <div className={styles.header}>
-        <h1 className={styles.title}>密码</h1>
+        {isCategoryPage && (
+          <button
+            className={styles.backButton}
+            onClick={() => navigate('/')}
+          >
+            ←
+          </button>
+        )}
+        <h1 className={styles.title}>{currentCategoryLabel}</h1>
         <button onClick={logout} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '20px' }}>
           🚪
         </button>
@@ -92,23 +109,26 @@ export function PasswordListPage() {
       </div>
 
       <div className={styles.stats}>
-        共 {passwords.length} 个密码
+        共 {displayCount} 个密码
         {needUpdateCount > 0 && (
           <span className={styles.needUpdate}>，{needUpdateCount} 个需要更新</span>
         )}
       </div>
 
-      <div className={styles.tabs}>
-        {CATEGORIES.map(cat => (
-          <button
-            key={cat}
-            className={`${styles.tab} ${selectedCategory === cat ? styles.active : ''}`}
-            onClick={() => setSelectedCategory(cat)}
-          >
-            {getCategoryLabel(cat)}
-          </button>
-        ))}
-      </div>
+      {/* 隐藏 tabs */}
+      {!isCategoryPage && (
+        <div className={styles.tabs}>
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat}
+              className={`${styles.tab} ${selectedCategory === cat ? styles.active : ''}`}
+              onClick={() => setSelectedCategory(cat)}
+            >
+              {getCategoryLabel(cat)}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className={styles.list}>
         {filteredPasswords.length === 0 ? (
