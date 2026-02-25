@@ -1,7 +1,7 @@
 // src/pages/password-list/index.tsx
 
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../../App';
 import { PasswordCard } from '../../components/password/password-card';
 import { Modal } from '../../components/common/modal';
@@ -15,6 +15,7 @@ const CATEGORIES: TabCategory[] = ['all', 'social', 'finance', 'ecommerce', 'wor
 
 export function PasswordListPage() {
   const navigate = useNavigate();
+  const { category } = useParams<{ category: string }>();
   const {
     passwords,
     searchQuery,
@@ -28,6 +29,13 @@ export function PasswordListPage() {
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [copyText, setCopyText] = useState('');
+
+  // 从URL参数设置分类
+  useEffect(() => {
+    if (category) {
+      setSelectedCategory(category as Category | 'all');
+    }
+  }, [category, setSelectedCategory]);
 
   const filteredPasswords = passwords.filter(p => {
     const matchesSearch = !searchQuery ||

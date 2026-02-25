@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation, Outlet } from 'react-router-dom';
 import { RelaxProvider, useRelaxState, useActions } from '@relax-state/react';
 import { LoginPage } from './pages/login';
+import { HomePage } from './pages/home';
 import { PasswordListPage } from './pages/password-list';
 import { PasswordDetailPage } from './pages/password-detail';
 import { GeneratorPage } from './pages/generator';
@@ -78,7 +79,8 @@ export default function App() {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/" element={<MainContent />}>
-                <Route index element={<PasswordListPage />} />
+                <Route index element={<HomePage />} />
+                <Route path="category/:category" element={<PasswordListPage />} />
                 <Route path="password/new" element={<PasswordDetailPage />} />
                 <Route path="password/:id" element={<PasswordDetailPage />} />
                 <Route path="generator" element={<GeneratorPage />} />
